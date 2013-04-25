@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Apigee Training App</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
+        <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+  	        <!-- Don't forget to download and include the SDK -->
+        <!-- It’s available at the root of github.com/apigee/usergrid-javascript-sdk -->
+        <script src="js/usergrid.js"></script>
+
+        <script type="text/javascript">
+
+            // Initializing the SDK
+            var client = new Usergrid.Client({
+                orgName:'resultsonlyjosh', // Your Usergrid organization name (or apigee.com username for App Services)
+                appName:'sandbox' // Your Usergrid app name
+            });
+
+            // A Collection object that will be used to hold the list of books locally
+            var my_locations = new Usergrid.Collection( { "client":client, "type":"locations" } );
+
+            $(document).ready( function () {
+               $('#create-button').bind('click', createLocation);
+                refreshFeed();
+                
+                function refreshFeed() {
+					// Actual network call
+					my_locations.fetch(
+
+						// Success Callback
+						function () {
+							$('#locations-list').empty();
+							
+							while ( my_locations.hasNextEntity() ) {
+								var current_location = my_locations.getNextEntity();
+
+								// Output the book on the page
+								$('#locations-list').append('<li><h3>'+current_location.get('name')+'</h3><p>'+current_location.get('address')+'</p></li>');
+							}
+							
+							// Re-apply jQuery Mobile styles
+							$('#locations-list').listview('refresh');
+						},
+
+						// Failure Callback
+						function () { alert("read failed"); }
+					);
+					
+					
+				}
+				
+				function createLocation() {
+
+					new_location = { "name":$("#name-field").val(),
+								"address":$("#address-field").val() };
+
+					my_locations.addEntity(new_location, function (error, response) {
+						if (error) {
+							alert('write failed');
+						} else {
+							$("#name-field").val(""), $("#address-field").val("");
+							refreshFeed();
+							history.back();
+						}
+					});
+				}
+            });
+        </script>
+    </head>
+    <body>
+
+        <div data-role="page" data-theme="c" id="page-locations-list">
+            <div data-role="header" data-theme="b">
+                <h1>Locations</h1>
+                <a href="#page-new-location" id="btn-compose" data-icon="plus" data-iconpos="right" data-inline="true" data-role="button" class="ui-btn-right">Add</a>
+            </div>
+
+            <div data-role="content">
+                <ul id="locations-list" data-role="listview" data-inset="false">
+                </ul>
+            </div>
+        </div>
+
+
+        <div data-role="page" data-theme="b" id="page-new-location">
+            <div data-role="header" data-theme="b">
+                <h1>Add a New Location</h1>
+            </div>
+            <div data-role="content">
+                <form>
+                    <label for="name-field">Name</label>
+                    <textarea id="name-field"></textarea>
+                    <label for="address-field">Address</label>
+                    <textarea id="address-field"></textarea>
+                </form>    
+                <a href="#page-locations-list" data-role="button" data-theme="c" data-inline="true">Cancel</a>
+                <button id="create-button" data-inline="true">Create</button>
+            </div>
+        </div>
+    </body>
+</html>
