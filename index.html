@@ -6,6 +6,8 @@
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
         <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="phonegap-2.5.0.js"></script>
+        <script src="barcodescanner.js" type="text/javascipt"></script>
   	        <!-- Don't forget to download and include the SDK -->
         <!-- It’s available at the root of github.com/apigee/usergrid-javascript-sdk -->
         <script src="usergrid.js"></script>
@@ -26,91 +28,89 @@
                $('#barcodeScanBtn').bind('click', barcodeScan);
                 refreshFeed();
                 
-                function refreshFeed() {
-					// Actual network call
-					my_locations.fetch(
+		function refreshFeed() {
+			// Actual network call
+			my_locations.fetch(
 
-						// Success Callback
-						function () {
-							$('#locations-list').empty();
-							
-							while ( my_locations.hasNextEntity() ) {
-								var current_location = my_locations.getNextEntity();
-
-								// Output the book on the page
-								$('#locations-list').append('<li><h3>'+current_location.get('name')+'</h3><p>'+current_location.get('address')+'</p></li>');
-							}
-							
-							// Re-apply jQuery Mobile styles
-							$('#locations-list').listview('refresh');
-						},
-
-						// Failure Callback
-						function () { alert("read failed"); }
-					);
+				// Success Callback
+				function () {
+					$('#locations-list').empty();
 					
+					while ( my_locations.hasNextEntity() ) {
+						var current_location = my_locations.getNextEntity();
+
+						// Output the book on the page
+						$('#locations-list').append('<li><h3>'+current_location.get('name')+'</h3><p>'+current_location.get('address')+'</p></li>');
+					}
 					
-				}
-				
-				function createLocation() {
+					// Re-apply jQuery Mobile styles
+					$('#locations-list').listview('refresh');
+				},
 
-					new_location = { "name":$("#name-field").val(),
-								"address":$("#address-field").val() };
+				// Failure Callback
+				function () { alert("read failed"); }
+			);
+			
+			
+		}
+		
+		function createLocation() {
 
-					my_locations.addEntity(new_location, function (error, response) {
-						if (error) {
-							alert('write failed');
-						} else {
-							$("#name-field").val(""), $("#address-field").val("");
-							refreshFeed();
-							history.back();
-						}
-					});
+			new_location = { "name":$("#name-field").val(),
+						"address":$("#address-field").val() };
+
+			my_locations.addEntity(new_location, function (error, response) {
+				if (error) {
+					alert('write failed');
+				} else {
+					$("#name-field").val(""), $("#address-field").val("");
+					refreshFeed();
+					history.back();
 				}
+			});
+		}
+
+		function barcodeScan() {
+			var scanner = window.PhoneGap.require("cordova/plugin/BarcodeScanner");
+			scanner.scan( function (result) { alert("We got a barcode\n" + "Result: " + result.text + "\n" + "Format: " + result.format + "\n" + "Cancelled: " + result.cancelled); }, function (error) { alert("Scanning failed: " + error); } );
+		}
+
             });
         </script>
-        <script type="text/javascript" charset="utf-8" src="phonegap-2.5.0.js"></script>
-        
-    <script src="barcodescanner.js" type="text/javascipt"></script>
-    <script type="text/javascript" charset="utf-8">
-
-    // Wait for PhoneGap to load
-    //
-    document.addEventListener("deviceready", onDeviceReady, false);
-
-    // PhoneGap is ready
-    //
-    function onDeviceReady() {
-        navigator.geolocation.getCurrentPosition(onSuccess, onError);
-    }
-
-    // onSuccess Geolocation
-    //
-    function onSuccess(position) {
-        var element = document.getElementById('geolocation');
-        element.innerHTML = 'Latitude: '           + position.coords.latitude              + '<br />' +
-                            'Longitude: '          + position.coords.longitude             + '<br />' +
-                            'Altitude: '           + position.coords.altitude              + '<br />' +
-                            'Accuracy: '           + position.coords.accuracy              + '<br />' +
-                            'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '<br />' +
-                            'Heading: '            + position.coords.heading               + '<br />' +
-                            'Speed: '              + position.coords.speed                 + '<br />' +
-                            'Timestamp: '          + new Date(position.timestamp)          + '<br />';
-    }
-
-    // onError Callback receives a PositionError object
-    //
-    function onError(error) {
-        alert('code: '    + error.code    + '\n' +
-              'message: ' + error.message + '\n');
-    }
-
-   function barcodeScan() {
-   	var scanner = window.PhoneGap.require("cordova/plugin/BarcodeScanner");
-	scanner.scan( function (result) { alert("We got a barcode\n" + "Result: " + result.text + "\n" + "Format: " + result.format + "\n" + "Cancelled: " + result.cancelled); }, function (error) { alert("Scanning failed: " + error); } );
-   }
-
-    </script>
+	<script type="text/javascript" charset="utf-8">
+	
+	    // Wait for PhoneGap to load
+	    //
+	    document.addEventListener("deviceready", onDeviceReady, false);
+	
+	    // PhoneGap is ready
+	    //
+	    function onDeviceReady() {
+	        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+	    }
+	
+	    // onSuccess Geolocation
+	    //
+	    function onSuccess(position) {
+	        var element = document.getElementById('geolocation');
+	        element.innerHTML = 'Latitude: '           + position.coords.latitude              + '<br />' +
+	                            'Longitude: '          + position.coords.longitude             + '<br />' +
+	                            'Altitude: '           + position.coords.altitude              + '<br />' +
+	                            'Accuracy: '           + position.coords.accuracy              + '<br />' +
+	                            'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '<br />' +
+	                            'Heading: '            + position.coords.heading               + '<br />' +
+	                            'Speed: '              + position.coords.speed                 + '<br />' +
+	                            'Timestamp: '          + new Date(position.timestamp)          + '<br />';
+	    }
+	
+	    // onError Callback receives a PositionError object
+	    //
+	    function onError(error) {
+	        alert('code: '    + error.code    + '\n' +
+	              'message: ' + error.message + '\n');
+	    }
+	    
+	 </script>
     </head>
     <body>
 
