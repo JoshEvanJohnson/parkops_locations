@@ -71,8 +71,10 @@
 		}
 
 		function barcodeScan() {
+			alert("starting barcode scan");
 			var scanner = window.PhoneGap.require("cordova/plugin/BarcodeScanner");
 			scanner.scan( function (result) { alert("We got a barcode\n" + "Result: " + result.text + "\n" + "Format: " + result.format + "\n" + "Cancelled: " + result.cancelled); }, function (error) { alert("Scanning failed: " + error); } );
+			alert("went through barcode scan code");
 		}
 
             });
@@ -86,6 +88,7 @@
 	    // PhoneGap is ready
 	    //
 	    function onDeviceReady() {
+	    	alert("devicereadyfunction fired");
 	        navigator.geolocation.getCurrentPosition(onSuccess, onError);
 	    }
 	
