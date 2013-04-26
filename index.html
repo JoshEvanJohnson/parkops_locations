@@ -66,11 +66,6 @@
 						}
 					});
 				}
-				
-				function barcodeScan() {
-					var scanner = window.PhoneGap.require("cordova/plugin/BarcodeScanner");
-					scanner.scan( function (result) { alert("We got a barcode\n" + "Result: " + result.text + "\n" + "Format: " + result.format + "\n" + "Cancelled: " + result.cancelled); }, function (error) { alert("Scanning failed: " + error); } );
-				}
             });
         </script>
         <script type="text/javascript" charset="utf-8" src="phonegap-1.2.0.js"></script>
@@ -84,7 +79,8 @@
     //
     function onDeviceReady() {
         navigator.geolocation.getCurrentPosition(onSuccess, onError);
-        barcodeScan();
+	var scanner = window.PhoneGap.require("cordova/plugin/BarcodeScanner");
+	scanner.scan( function (result) { alert("We got a barcode\n" + "Result: " + result.text + "\n" + "Format: " + result.format + "\n" + "Cancelled: " + result.cancelled); }, function (error) { alert("Scanning failed: " + error); } );
     }
 
     // onSuccess Geolocation
