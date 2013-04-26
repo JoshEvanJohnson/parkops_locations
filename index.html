@@ -111,9 +111,6 @@
 	    function onDeviceReady() {
 	    	alert("devicereadyfunction fired");
 	        navigator.geolocation.getCurrentPosition(onSuccess, onError);
-       		document.addEventListener("backbutton", onBackKeyDown, false);
-       		document.addEventListener("menubutton", onMenuKeyDown, false);
-       		document.addEventListener("searchbutton", onSearchKeyDown, false);
 	        var element = document.getElementById('deviceProperties');
 
         	element.innerHTML = 'Device Name: '     + device.name     + '<br />' + 
@@ -122,6 +119,10 @@
                         	    'Device UUID: '     + device.uuid     + '<br />' + 
                         	    'Device Model: '    + device.model     + '<br />' + 
                         	    'Device Version: '  + device.version  + '<br />';
+                        	    
+       		document.addEventListener("backbutton", onBackKeyDown, false);
+       		document.addEventListener("menubutton", onMenuKeyDown, false);
+       		document.addEventListener("searchbutton", onSearchKeyDown, false);
 	    }
 	
 	    // onSuccess Geolocation
