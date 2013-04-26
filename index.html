@@ -23,6 +23,7 @@
 
             $(document).ready( function () {
                $('#create-button').bind('click', createLocation);
+               $('#barcodeScanBtn').bind('click', barcodeScan);
                 refreshFeed();
                 
                 function refreshFeed() {
@@ -79,8 +80,6 @@
     //
     function onDeviceReady() {
         navigator.geolocation.getCurrentPosition(onSuccess, onError);
-	var scanner = window.PhoneGap.require("cordova/plugin/BarcodeScanner");
-	scanner.scan( function (result) { alert("We got a barcode\n" + "Result: " + result.text + "\n" + "Format: " + result.format + "\n" + "Cancelled: " + result.cancelled); }, function (error) { alert("Scanning failed: " + error); } );
     }
 
     // onSuccess Geolocation
@@ -104,6 +103,11 @@
               'message: ' + error.message + '\n');
     }
 
+   function barcodeScan() {
+   	var scanner = window.PhoneGap.require("cordova/plugin/BarcodeScanner");
+	scanner.scan( function (result) { alert("We got a barcode\n" + "Result: " + result.text + "\n" + "Format: " + result.format + "\n" + "Cancelled: " + result.cancelled); }, function (error) { alert("Scanning failed: " + error); } );
+   }
+
     </script>
     </head>
     <body>
@@ -119,6 +123,9 @@
                 </ul>
             </div>
     	    <p id="geolocation">Finding geolocation...</p>
+    	    <p>
+                <button id="barcodeScanBtn" data-inline="true">Scan</button>
+            </p>
         </div>
 
 
