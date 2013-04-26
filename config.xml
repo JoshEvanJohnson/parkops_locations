@@ -9,6 +9,7 @@
         <preference name="phonegap-version" value="1.2.0" />
 
     <name>ParkOps Locations</name>
+    <gap:plugin name="BarcodeScanner" /> <!-- latest release -->
 
     <description>
         An application that loads and adds locations for park ops.
