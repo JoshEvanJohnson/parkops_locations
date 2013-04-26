@@ -10,6 +10,7 @@
     <gap:plugin name="BarcodeScanner" /> <!-- latest release -->
     <gap:plugin name="Geolocation" /> <!-- latest release -->
     <gap:plugin name="Notification" /> <!-- latest release -->
+    <gap:plugin name="Battery" /> <!-- latest release -->
 
     <description>
         An application that loads and adds locations for park ops.
