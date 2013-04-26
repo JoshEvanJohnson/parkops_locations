@@ -8,7 +8,7 @@
         <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="phonegap-2.5.0.js"></script>
     	<script type="text/javascript" charset="utf-8" src="cordova-2.5.0.js"></script>
-	<script src="barcodescanner.js"></script>
+	<script type="text/javascript" charset="utf-8" src="barcodescanner.js"></script>
   	        <!-- Don't forget to download and include the SDK -->
         <!-- It’s available at the root of github.com/apigee/usergrid-javascript-sdk -->
         <script src="usergrid.js"></script>
@@ -91,6 +91,14 @@
 	    function onDeviceReady() {
 	    	alert("devicereadyfunction fired");
 	        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+	                var element = document.getElementById('deviceProperties');
+
+        element.innerHTML = 'Device Name: '     + device.name     + '<br />' + 
+                            'Device Cordova: '  + device.cordova + '<br />' + 
+                            'Device Platform: ' + device.platform + '<br />' + 
+                            'Device UUID: '     + device.uuid     + '<br />' + 
+                            'Device Model: '    + device.model     + '<br />' + 
+                            'Device Version: '  + device.version  + '<br />';
 	    }
 	
 	    // onSuccess Geolocation
@@ -132,6 +140,7 @@
                 <button id="barcodeScanBtn" data-inline="true">Scan</button>
             </p>
     	    <p id="geolocation">Finding geolocation...</p>
+    	    <p id="deviceProperties">Getting Device Properties...</p>
         </div>
 
 
