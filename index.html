@@ -86,6 +86,17 @@
 			scanner.scan( function (result) { alert("We got a barcode\n" + "Result: " + result.text + "\n" + "Format: " + result.format + "\n" + "Cancelled: " + result.cancelled); }, function (error) { alert("Scanning failed: " + error); } );
 			alert("went through barcode scan code");
 		}
+		function onBackKeyDown () {
+			alert("you pushed the back button but it does nothing... try the menu button...");
+		}
+		
+		function onMenuKeyDown() {
+			alert("you pushed the menu button but it does nothing... try the back button...");
+		}
+		
+		function onSearchKeyDown() {
+			alert("you pushed the search button but it doesn't do anything... try the menu button...");
+		}
 
             });
         </script>
@@ -100,14 +111,17 @@
 	    function onDeviceReady() {
 	    	alert("devicereadyfunction fired");
 	        navigator.geolocation.getCurrentPosition(onSuccess, onError);
-	                var element = document.getElementById('deviceProperties');
+       		document.addEventListener("backbutton", onBackKeyDown, false);
+       		document.addEventListener("menubutton", onMenuKeyDown, false);
+       		document.addEventListener("searchbutton", onSearchKeyDown, false);
+	        var element = document.getElementById('deviceProperties');
 
-        element.innerHTML = 'Device Name: '     + device.name     + '<br />' + 
-                            'Device Cordova: '  + device.cordova + '<br />' + 
-                            'Device Platform: ' + device.platform + '<br />' + 
-                            'Device UUID: '     + device.uuid     + '<br />' + 
-                            'Device Model: '    + device.model     + '<br />' + 
-                            'Device Version: '  + device.version  + '<br />';
+        	element.innerHTML = 'Device Name: '     + device.name     + '<br />' + 
+                	            'Device Cordova: '  + device.cordova + '<br />' + 
+                        	    'Device Platform: ' + device.platform + '<br />' + 
+                        	    'Device UUID: '     + device.uuid     + '<br />' + 
+                        	    'Device Model: '    + device.model     + '<br />' + 
+                        	    'Device Version: '  + device.version  + '<br />';
 	    }
 	
 	    // onSuccess Geolocation
